@@ -1,7 +1,28 @@
 openapi: 3.0.3
 info:
   title: Device location verification API
-  description: Service Enabling Network Function API for location verification
+  description: |-
+    Service Enabling Network Function API for location verification. This API provides the customer with the ability to verify the location of a device. 
+
+    # API Functionality
+    Customers are able to verify whether the location of certain user device is within the area specified by the provided coordinates (latitude and longitude) and some expected accuracy.
+
+    # Resources and Operations overview
+    This API exposes only one endpoint, which can be used to verify device location for user equipment. To do so the user has to pass the following parameters in request body:
+      1. **device** - an object with four fields, each of them make possible to pass the device in different format: `phoneNumber`, `networkAccessIdentifier`, `ipv4Address` and `ipv6Address`. For ipv4 format publicAddress must be sent together with privateAddress or publicPort.
+      2. **area** - an object with three properties that allow the location of the device to be constrained. The area is also composed of 3 properties:
+          * ***type*** - property that specifies the shape or boundaries of the location area.
+          * ***location*** - Coordinates (latitude, longitude) defining a location in a map. It consists of:
+            * *latitude* - double number value for the latitude to be verified in decimal degrees.
+            * *longitude* - double number value for the longitude to be verified in decimal degrees.
+          * ***accuracy*** - number value for the expected accuracy in km. The allowed range is between 2 km and 200 km. 
+
+    Client asks whether the device location is within a circle with center specified by the latitude and longitude, and radius specified by the accuracy.
+
+    **Additional details:**
+    
+    - **(1):** The Device location API makes use of the client credentials grant which is applicable for server to server use cases involving trusted partners or clients without any protected user data involved. In this method the API invoker client is registered as a confidential client with an authorization grant type of client_credentials. Depending on local legal regulation, network provider may require the 3-legged process to provide location verification.
+
   termsOfService: http://swagger.io/terms/
   contact:
     email: project-email@sample.com
